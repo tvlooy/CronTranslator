@@ -3,7 +3,6 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
-use Symfony\Component\HttpFoundation\Response;
 use Intracto\Cron\CronExpression;
 
 $app = new Silex\Application();
