@@ -1,0 +1,6 @@
+<h1>Cron</h1>
+<form method="post" action="/">
+    <input type="text" name="cron" value="{{ cron }}" />
+    <input type="submit" value="Parse">
+</form>
+<pre>{% if body is defined %}{{ body|raw }}{% endif %}</pre>
