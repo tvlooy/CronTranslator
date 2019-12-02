@@ -3,21 +3,20 @@
 require_once __DIR__.'/../vendor/autoload.php';
 
 use Symfony\Component\HttpFoundation\Request;
+use Twig\Loader\FilesystemLoader;
+use Twig\Environment;
 use Intracto\Cron\CronExpression;
 
-$app = new Silex\Application();
+$request = Request::createFromGlobals();
+$twig = new Environment(new FilesystemLoader(__DIR__ . '/../templates'));
 
-$app->register(new Silex\Provider\TwigServiceProvider(), array(
-    'twig.path' => __DIR__.'/views',
-));
-
-$app->get('/', function () use ($app) {
-    return $app['twig']->render('index.twig', array(
+if ($request->isMethod(Request::METHOD_GET)) {
+    echo $twig->render('index.twig', [
         'cron' => '*/15 8-16,03 * * *',
-    ));
-});
+    ]);
+}
 
-$app->post('/', function (Request $request) use ($app) {
+if ($request->isMethod(Request::METHOD_POST)) {
     try {
         $cron = CronExpression::factory($request->get('cron'));
 
@@ -27,18 +26,16 @@ $app->post('/', function (Request $request) use ($app) {
                 '<br>             ';
         }
 
-        return $app['twig']->render('index.twig', array(
+        echo $twig->render('index.twig', [
             'cron' => (string) $cron,
             'body' => 'Will run   :<br>' .
                 $cron->toEnglish() . '<br>' .
                 'Last run   : ' . $cron->getPreviousRunDate()->format('d/m/Y H:i:s') . '<br>' .
                 $nextRuns
-        ));
+        ]);
     } catch (\Exception $e) {
-        return $app['twig']->render('index.twig', array(
+        echo $twig->render('index.twig', [
             'cron' => '*/15 8-16,03 * * *',
-        ));
+        ]);
     }
-});
-
-$app->run();
+}

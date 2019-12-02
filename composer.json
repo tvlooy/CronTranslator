@@ -1,12 +1,12 @@
 {
-    "require": {
-        "silex/silex": "1.0.*@dev",
-        "twig/twig": ">=1.8,<2.0-dev",
-        "mtdowling/cron-expression": "dev-master"
-    },
     "autoload": {
-        "psr-0": {
-            "Intracto": "src/"
+        "psr-4": {
+            "Intracto\\": "src/"
         }
+    },
+    "require": {
+        "mtdowling/cron-expression": "^1.2",
+        "symfony/http-foundation": "^5.0",
+        "twig/twig": "^3.0"
     }
 }
